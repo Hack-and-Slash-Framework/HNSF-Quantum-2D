@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.1.0...v1.2.0) (2026-02-20)
+
+
+### Features
+
+* Added HitForceData ([ca1df50](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/ca1df507b7249e8967c3634d33255bd778692da6))
+
 # [1.1.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.0.0...v1.1.0) (2026-02-19)
 
 
