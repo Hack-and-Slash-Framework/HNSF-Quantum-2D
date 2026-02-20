@@ -1,3 +1,11 @@
+# [1.4.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.3.0...v1.4.0) (2026-02-20)
+
+
+### Features
+
+* SoundEffectHelper ([c333685](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/c333685a89c23a8e5e54e5a0adce5301c46516a8))
+* Various physics components ([de25969](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/de25969e23ee1349e47db920f7907455a70248ba))
+
 # [1.3.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.2.0...v1.3.0) (2026-02-20)
 
 
