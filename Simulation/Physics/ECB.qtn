@@ -1,0 +1,6 @@
+component ECB
+{
+    FPVector2 offset;
+    FP radius;
+    FP height;
+}

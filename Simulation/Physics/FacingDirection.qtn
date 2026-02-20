@@ -1,0 +1,4 @@
+component FacingDirection
+{
+    bool isFacingRight;
+}
