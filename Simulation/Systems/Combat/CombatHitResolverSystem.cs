@@ -75,7 +75,7 @@ namespace HnSF.core.systems
             var shouldResolve = ThrowEntity(f,
                 throwboxCombatPair.Value,
                 f.Get<Throwbox>(throwboxCombatPair.Value.entityAThrowbox),
-                f.Unsafe.GetPointer<Transform3D>(throwboxCombatPair.Value.entityAThrowbox)->Position);
+                f.Unsafe.GetPointer<Transform2D>(throwboxCombatPair.Value.entityAThrowbox)->Position);
                 
             if (shouldResolve) defendersAlreadyHitThisFrame.Add(throwboxCombatPair.Value.entityB);
         }
@@ -183,7 +183,7 @@ namespace HnSF.core.systems
         }
         
         protected virtual bool ThrowEntity(Frame f, ThrowboxCombatPair combatPair,
-            Throwbox attackerThrowbox, FPVector3 attackerThrowboxPos)
+            Throwbox attackerThrowbox, FPVector2 attackerThrowboxPos)
         {
             if (f.Has<IsBeingThrown>(combatPair.entityB)) return false;
             
