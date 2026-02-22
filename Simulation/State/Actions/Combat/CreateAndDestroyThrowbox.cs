@@ -1,0 +1,109 @@
+using Photon.Deterministic;
+using System;
+using System.Linq;
+using HnSF.core.state;
+using HnSF.core.state.actions;
+using Quantum;
+
+namespace HnSF.core.state.actions
+{
+    [Serializable]
+    public unsafe partial class CreateAndDestroyThrowbox : HNSFStateAction
+    {
+        public bool autoDelete = true;
+        public int boxIdentifier;
+        public int priority;
+        public AssetRef<ThrowInfo> throwInfo;
+        
+        public bool useExternalShapeConfig;
+        [DrawIf(nameof(useExternalShapeConfig), true)]
+        public AssetRef<Shape2DConfigOffsetRotation> externalShape2DConfigReference;
+        [DrawIf(nameof(useExternalShapeConfig), false)]
+        public FPVector2 offset;
+        [DrawIf(nameof(useExternalShapeConfig), false)]
+        public FP rotation;
+        [DrawIf(nameof(useExternalShapeConfig), false)]
+        public Shape2DConfig shapeConfig = new();
+        
+        public override bool ExecuteAction(Frame frame, EntityRef entity, FP rangePercent,
+            ref HNSFStateContext stateContext)
+        {
+            if (!frame.Unsafe.TryGetPointer<BoxCombatant>(entity, out var boxCombatant)
+                || !frame.Unsafe.TryGetPointer<Transform2D>(entity, out var transform)
+                || !frame.Unsafe.TryGetPointer<FacingDirection>(entity, out var faceDir)) return false;
+
+            if (autoDelete && rangePercent >= 1)
+            {
+                boxCombatant->DeleteThrowboxByID(frame, boxIdentifier);
+                return false;
+            }
+            if (boxCombatant->ThrowboxExistWithId(frame, boxIdentifier)) return false;
+            
+            
+            var throwboxList = frame.ResolveList(boxCombatant->throwboxList);
+            Shape2D shape;
+            FPVector2 realOffset;
+            FP realRotation;
+            if (useExternalShapeConfig && frame.TryFindAsset(externalShape2DConfigReference, out var externalShape2DConfig))
+            {
+                shape = externalShape2DConfig.shape.CreateShape(frame);
+                realOffset = externalShape2DConfig.offset;
+                realRotation = externalShape2DConfig.rotation;
+            }
+            else
+            {
+                shape = shapeConfig.CreateShape(frame);
+                realOffset = offset;
+                realRotation = rotation;
+            }
+                
+            var boxPhysicsCollider = new PhysicsCollider2D
+            {
+                Layer = frame.Layers.GetLayerIndex("Throwbox"),
+                IsTrigger = true,
+                Shape = shape
+            };
+                
+            var boxEntity = frame.Create();
+            frame.Add(boxEntity, new Throwbox() { active = true, priority = priority, owner = entity, throwInfoRef = throwInfo, id = boxIdentifier});
+            frame.Add(boxEntity, new Transform2D(){ Position = transform->Position + faceDir->TransformDirection(realOffset), Rotation = transform->Rotation + (realRotation * FP.Deg2Rad)});
+            frame.Add(boxEntity, new Parented2D() { parent = entity, localOffset = faceDir->TransformDirection(realOffset), localRotation = realRotation });
+            frame.Add(boxEntity, boxPhysicsCollider);
+            throwboxList.Add(boxEntity);
+            return false;
+        }
+
+        public override HNSFStateAction Copy()
+        {
+            return CopyTo(new CreateAndDestroyThrowbox());
+        }
+
+        public override HNSFStateAction CopyTo(HNSFStateAction target)
+        {
+            var t = target as CreateAndDestroyThrowbox;
+            t.autoDelete = autoDelete;
+            t.boxIdentifier= boxIdentifier;
+            t.priority = priority;
+            t.throwInfo = throwInfo;
+            t.useExternalShapeConfig = useExternalShapeConfig;
+            t.externalShape2DConfigReference = externalShape2DConfigReference;
+            t.offset = offset;
+            t.rotation = rotation;
+            t.shapeConfig = new Shape2DConfig()
+            {
+                BoxExtents = shapeConfig.BoxExtents,
+                CapsuleSize = shapeConfig.CapsuleSize,
+                CircleRadius = shapeConfig.CircleRadius,
+                CompoundShapes = shapeConfig.CompoundShapes.ToArray(),
+                EdgeExtent = shapeConfig.EdgeExtent,
+                IsPersistent = shapeConfig.IsPersistent,
+                PolygonCollider = shapeConfig.PolygonCollider,
+                PositionOffset = shapeConfig.PositionOffset,
+                RotationOffset = shapeConfig.RotationOffset,
+                ShapeType = shapeConfig.ShapeType,
+                UserTag = shapeConfig.UserTag
+            };
+            return base.CopyTo(target);
+        }
+    }
+}
