@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.4.0...v1.5.0) (2026-02-22)
+
+
+### Features
+
+* Various state actions ([9bef227](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/9bef2279945a097be548f2355ce858575b97a709))
+
 # [1.4.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.3.0...v1.4.0) (2026-02-20)
 
 
