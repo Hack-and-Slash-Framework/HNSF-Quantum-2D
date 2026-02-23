@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.5.0...v1.6.0) (2026-02-23)
+
+
+### Features
+
+* View handlers for hitstop shake & sound ([d7ac09a](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/d7ac09a5b4bad0cd619aa05062fa359c8c606250))
+
 # [1.5.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.4.0...v1.5.0) (2026-02-22)
 
 
