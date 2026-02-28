@@ -2,7 +2,7 @@ using HnSF;
 
 namespace Quantum
 {
-    public partial class AnimationEntry : AssetObject
+    public partial class AnimationEntry
     {
         public partial class AnimEntry
         {
