@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.6.0...v1.6.1) (2026-02-28)
+
+
+### Bug Fixes
+
+* Renamed extension AssetObjects properly ([75109d6](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/75109d6536d19c0791f83aeda615bc4693cb3e35))
+
 # [1.6.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.5.0...v1.6.0) (2026-02-23)
 
 
