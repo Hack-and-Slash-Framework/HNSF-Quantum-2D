@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.6.1...v1.7.0) (2026-03-02)
+
+
+### Features
+
+* Oneshot VFX callback receiver ([f9a50ca](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/f9a50ca4ae7ea370ca586ce004ac6f1b84f04c1f))
+
 ## [1.6.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.6.0...v1.6.1) (2026-02-28)
 
 
