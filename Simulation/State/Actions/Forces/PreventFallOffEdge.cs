@@ -12,6 +12,7 @@ namespace HnSF.core.state.actions
     {
         public FP multi = 1;
         public LayerMask layerMask;
+        public FP distanceModi = FP._0_10;
         
         public override bool ExecuteAction(Frame frame, EntityRef entity, FP rangePercent,
             ref HNSFStateContext stateContext)
@@ -36,7 +37,7 @@ namespace HnSF.core.state.actions
             var h2 = frame.Physics2D.Raycast(
                 entityTransform->Position + ecb->offset + (FPVector2.Right * forceDir * force * multi),
                 FPVector2.Down,
-                ecb->radius * FP._1_50, 
+                (ecb->height / FP._2) + distanceModi,
                 layerMask);
             if (h2.HasValue) return false;
 
