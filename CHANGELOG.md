@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.0...v1.7.1) (2026-03-03)
+
+
+### Bug Fixes
+
+* Fix PreventFallOffEdge logic ([2ebc117](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/2ebc11733bd672e5d0899ddf335124673b8fb100))
+
 # [1.7.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.6.1...v1.7.0) (2026-03-02)
 
 
