@@ -11,6 +11,7 @@ namespace HnSF.core.state.actions
         public AssetRef<EntityPrototype> projectilePrototypeRef;
         public FPVector2 offset;
         public bool articleOnSameTeam = true;
+        public bool sameFacingDirectionAsOwner = true;
         public bool setSameTargetAsOwner;
         public bool useSameStats = true;
         public StateActionTargetContext targetContext = new StateActionTargetContext();
@@ -43,6 +44,14 @@ namespace HnSF.core.state.actions
                 articleTransform->Rotation = transformOrigin->Rotation;
             }
 
+            if (sameFacingDirectionAsOwner && frame.Unsafe.TryGetPointer<FacingDirection>(articleEntityRef,
+                                               out var articleFacingDirection)
+                                           && frame.Unsafe.TryGetPointer<FacingDirection>(entity,
+                                               out var ownerFacingDirection))
+            {
+                articleFacingDirection->isFacingRight = ownerFacingDirection->isFacingRight;
+            }
+            
             if (articleOnSameTeam 
                 && frame.Unsafe.TryGetPointer<CombatTeam>(articleEntityRef, out var articleTeam)
                 && frame.Unsafe.TryGetPointer<CombatTeam>(entity, out var selfTeam))
@@ -81,6 +90,7 @@ namespace HnSF.core.state.actions
             t.projectilePrototypeRef = projectilePrototypeRef;
             t.offset = offset;
             t.articleOnSameTeam = articleOnSameTeam;
+            t.sameFacingDirectionAsOwner = sameFacingDirectionAsOwner;
             t.setSameTargetAsOwner = setSameTargetAsOwner;
             t.useSameStats = useSameStats;
             t.targetContext = targetContext;
