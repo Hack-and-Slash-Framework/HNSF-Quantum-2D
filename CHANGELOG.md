@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.1...v1.7.2) (2026-03-10)
+
+
+### Bug Fixes
+
+* Fixed article spawn not inheriting facing direction ([ab4e67e](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/ab4e67e6df694e1d36991c45a547596415d59090))
+
 ## [1.7.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.0...v1.7.1) (2026-03-03)
 
 
