@@ -11,11 +11,10 @@ namespace HnSF.core.state.actions
         public AssetRef<EntityPrototype> projectilePrototypeRef;
         public FPVector2 offset;
         public bool articleOnSameTeam = true;
-        public bool sameFacingDirectionAsOwner = true;
         public bool setSameTargetAsOwner;
         public bool useSameStats = true;
         public StateActionTargetContext targetContext = new StateActionTargetContext();
-        
+
         public override bool ExecuteAction(Frame frame, EntityRef entity, FP rangePercent,
             ref HNSFStateContext stateContext)
         {
@@ -29,30 +28,32 @@ namespace HnSF.core.state.actions
 
             return DoAction(frame, actionTarget, transform);
         }
-        
+
         public bool DoAction(Frame frame, EntityRef entity, Transform2D* transformOrigin)
         {
             if (projectilePrototypeRef == default
                 || !frame.Unsafe.TryGetPointer<ArticlesOwner>(entity, out var articlesOwner)
-                || !frame.TryFindAsset<EntityPrototype>(projectilePrototypeRef.Id, out var projectilePrototype)) return false;
-        
+                || !frame.TryFindAsset<EntityPrototype>(projectilePrototypeRef.Id, out var projectilePrototype))
+                return false;
+
             var articleEntityRef = articlesOwner->SpawnArticle(frame, entity, projectilePrototypeRef);
 
             if (frame.Unsafe.TryGetPointer<Transform2D>(articleEntityRef, out var articleTransform))
             {
-                articleTransform->Position = transformOrigin->Position + transformOrigin->TransformDirection(offset);
+                articleTransform->Position = transformOrigin->Position;
                 articleTransform->Rotation = transformOrigin->Rotation;
-            }
-
-            if (sameFacingDirectionAsOwner && frame.Unsafe.TryGetPointer<FacingDirection>(articleEntityRef,
-                                               out var articleFacingDirection)
-                                           && frame.Unsafe.TryGetPointer<FacingDirection>(entity,
-                                               out var ownerFacingDirection))
-            {
-                articleFacingDirection->isFacingRight = ownerFacingDirection->isFacingRight;
+                
+                if (frame.Unsafe.TryGetPointer<FacingDirection>(articleEntityRef,
+                        out var articleFacingDirection)
+                    && frame.Unsafe.TryGetPointer<FacingDirection>(entity,
+                        out var ownerFacingDirection))
+                {
+                    articleFacingDirection->isFacingRight = ownerFacingDirection->isFacingRight;
+                    articleTransform->Position += articleFacingDirection->TransformDirection(offset);
+                }
             }
             
-            if (articleOnSameTeam 
+            if (articleOnSameTeam
                 && frame.Unsafe.TryGetPointer<CombatTeam>(articleEntityRef, out var articleTeam)
                 && frame.Unsafe.TryGetPointer<CombatTeam>(entity, out var selfTeam))
             {
@@ -70,12 +71,13 @@ namespace HnSF.core.state.actions
             if (useSameStats)
             {
                 frame.Remove<ActorCombatStats>(articleEntityRef);
-                
+
                 frame.Add(articleEntityRef, new ActorCombatStatsFrom()
                 {
                     actorCombatStatEntityRef = entity
                 });
             }
+
             return false;
         }
 
@@ -90,7 +92,6 @@ namespace HnSF.core.state.actions
             t.projectilePrototypeRef = projectilePrototypeRef;
             t.offset = offset;
             t.articleOnSameTeam = articleOnSameTeam;
-            t.sameFacingDirectionAsOwner = sameFacingDirectionAsOwner;
             t.setSameTargetAsOwner = setSameTargetAsOwner;
             t.useSameStats = useSameStats;
             t.targetContext = targetContext;
