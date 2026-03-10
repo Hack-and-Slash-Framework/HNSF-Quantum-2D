@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.2...v1.7.3) (2026-03-10)
+
+
+### Bug Fixes
+
+* Fixed article facing direction ([f4a218f](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/f4a218fd940695661bff3af7bedf127caa34c7b8))
+
 ## [1.7.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.1...v1.7.2) (2026-03-10)
 
 
