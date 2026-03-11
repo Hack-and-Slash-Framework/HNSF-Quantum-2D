@@ -1,3 +1,10 @@
+## [1.7.4](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.3...v1.7.4) (2026-03-11)
+
+
+### Bug Fixes
+
+* Fixed KCC2D deltatime not using local deltatime ([2dd6c3b](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/2dd6c3b4e325054ff4cc76b94f85782f871e5c76))
+
 ## [1.7.3](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.2...v1.7.3) (2026-03-10)
 
 
