@@ -92,6 +92,10 @@ namespace Quantum
             if(offset.HasValue) _context.Settings.Offset = offset.Value;
 
             _context.KCC = KCC;
+            
+            var dt = _context.Frame.DeltaTime;
+            var hasLdt = frame.Unsafe.TryGetPointer<LocalDeltaTime>(e, out var ldt);
+            if (hasLdt) dt *= ldt->multiplier;
 
             if (_context.KCC->IgnoreStep)
             {
@@ -111,7 +115,7 @@ namespace Quantum
             int steps = 1;
             if (_context.Settings.CCD)
             {
-                var fullStepLength = FPMath.Abs(_context.KCC->CombinedVelocity.Magnitude) * _context.Frame.DeltaTime;
+                var fullStepLength = FPMath.Abs(_context.KCC->CombinedVelocity.Magnitude) * dt;
                 steps = (fullStepLength / _context.Settings.CapsuleRadius).AsInt + 1;
             }
 
@@ -120,7 +124,7 @@ namespace Quantum
                 _context.KCC->Closest.Overlapping = false;
                 _context.KCC->Closest.ContactType = KCCContactType.NONE;
                 // pre-move (velocity * delta / steps)
-                position += (_context.KCC->CombinedVelocity * _context.Frame.DeltaTime) / steps;
+                position += (_context.KCC->CombinedVelocity * dt) / steps;
 
                 // apply movement step
                 transform->Position = position - _context.Settings.Offset;
@@ -161,10 +165,10 @@ namespace Quantum
             if (debug) Draw.Capsule(position, _capsuleShape.Capsule, color: colorFinal);
 
             // switch state
-            ComputeState();
+            ComputeState(dt);
         }
 
-        private void ComputeState()
+        private void ComputeState(FP deltaTime)
         {
             // grounded and walled have priority and always switch
             var forceSwitch = ShouldForcedSwitch(_context.KCC->State, _context.KCC->Closest.ContactType);
@@ -179,7 +183,7 @@ namespace Quantum
                         _context.KCC->SetState(_context.Frame, KCCState.GROUNDED,
                             forceSwitch ? _context.Settings.CoyoteTime : null);
                         _context.KCC->_dynamicVelocity *=
-                            FPMath.Clamp01(1 - _context.Settings.Deceleration * _context.Frame.DeltaTime);
+                            FPMath.Clamp01(1 - _context.Settings.Deceleration * deltaTime);
                         _context.KCC->_dynamicVelocity.Y = 0;
                         break;
                     case KCCContactType.WALL:
