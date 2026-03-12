@@ -1,3 +1,10 @@
+## [1.7.5](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.4...v1.7.5) (2026-03-12)
+
+
+### Bug Fixes
+
+* Fixed KCC2D wall collisions ([6b653b0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/6b653b019ad53cb5a94e7bc060c88f1a01c53813))
+
 ## [1.7.4](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.3...v1.7.4) (2026-03-11)
 
 
