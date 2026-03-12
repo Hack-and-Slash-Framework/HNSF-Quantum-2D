@@ -68,12 +68,12 @@ namespace Quantum
         private Shape2D _capsuleShape;
         private KCC2DContext _context = new KCC2DContext();
 
-        public void Move(Frame frame, EntityRef e, Transform2D* transform, KCC2D* KCC, FP? radius = null, FP? height = null, FPVector2? offset = null)
+        public virtual void Move(Frame frame, EntityRef e, Transform2D* transform, KCC2D* KCC, FP? radius = null, FP? height = null, FPVector2? offset = null)
         {
             Move(frame, e, transform, KCC, null, radius, height, offset);
         }
 
-        public void Move(Frame frame, EntityRef e, Transform2D* transform, KCC2D* KCC, KCC2DSettings? settings, FP? radius = null, FP? height = null, FPVector2? offset = null)
+        public virtual void Move(Frame frame, EntityRef e, Transform2D* transform, KCC2D* KCC, KCC2DSettings? settings, FP? radius = null, FP? height = null, FPVector2? offset = null)
         {
             _context.Entity = e;
             _context.Transform = transform;
@@ -109,7 +109,7 @@ namespace Quantum
             var position = transform->Position + _context.Settings.Offset;
             
             // Modify Velocities Here //
-            // ...
+            ModifyVelocityPreSolve();
 
             // Apply Forces to Transform
             int steps = 1;
@@ -168,12 +168,27 @@ namespace Quantum
             ComputeState(dt);
         }
 
-        private void ComputeState(FP deltaTime)
+        protected virtual void ModifyVelocityPreSolve()
+        {
+        }
+
+        protected virtual void ComputeState(FP deltaTime)
         {
             // grounded and walled have priority and always switch
             var forceSwitch = ShouldForcedSwitch(_context.KCC->State, _context.KCC->Closest.ContactType);
             var previousState = _context.KCC->State;
             
+            ComputeStateBasedOnContact(deltaTime, forceSwitch);
+            ApplyNewState(previousState);
+
+            if (_context.KCC->Closest.ContactType == KCCContactType.CEIL && _context.KCC->KinematicVerticalSpeed > 0)
+                _context.KCC->KinematicVerticalSpeed = 0;
+
+            _context.Frame.Signals.OnKCC2DAfterState(_context.Entity, _context.KCC, ref _context.Settings);
+        }
+
+                protected virtual void ComputeStateBasedOnContact(FP deltaTime, bool forceSwitch)
+        {
             // switch state based on contacts
             if (forceSwitch || !_context.KCC->StateTimer.IsSet || !_context.KCC->StateTimer.IsRunning(_context.Frame))
             {
@@ -198,6 +213,7 @@ namespace Quantum
                         {
                             _context.KCC->SetState(_context.Frame, KCCState.WALLED);
                         }*/
+                        _context.KCC->SetState(_context.Frame, KCCState.FREE_FALLING);
                         break;
                     case KCCContactType.SLOPE:
                         _context.KCC->SetState(_context.Frame, KCCState.SLOPED);
@@ -211,7 +227,10 @@ namespace Quantum
                         break;
                 }
             }
-
+        }
+        
+        protected virtual void ApplyNewState(KCCState previousState)
+        {
             // apply stuff based on state
             switch (_context.KCC->State)
             {
@@ -242,7 +261,6 @@ namespace Quantum
                             KCCState.WALLED);
                         _context.KCC->KinematicHorizontalSpeed = 0;
                     }
-
                     break;
                 case KCCState.GROUNDED:
                     if (previousState != KCCState.GROUNDED)
@@ -251,16 +269,10 @@ namespace Quantum
                             KCCState.GROUNDED);
                         _context.KCC->KinematicVerticalSpeed = 0;
                     }
-
                     break;
             }
-
-            if (_context.KCC->Closest.ContactType == KCCContactType.CEIL && _context.KCC->KinematicVerticalSpeed > 0)
-                _context.KCC->KinematicVerticalSpeed = 0;
-
-            _context.Frame.Signals.OnKCC2DAfterState(_context.Entity, _context.KCC, ref _context.Settings);
         }
-        
+
         private static bool ShouldForcedSwitch(KCCState currentState, KCCContactType contactType)
         { 
           if (contactType == KCCContactType.GROUND) return true;
