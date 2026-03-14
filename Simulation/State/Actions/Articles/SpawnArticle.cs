@@ -29,14 +29,14 @@ namespace HnSF.core.state.actions
             return DoAction(frame, actionTarget, transform);
         }
 
-        public bool DoAction(Frame frame, EntityRef entity, Transform2D* transformOrigin)
+        public bool DoAction(Frame frame, EntityRef ownerEntityRef, Transform2D* transformOrigin)
         {
             if (projectilePrototypeRef == default
-                || !frame.Unsafe.TryGetPointer<ArticlesOwner>(entity, out var articlesOwner)
+                || !frame.Unsafe.TryGetPointer<ArticlesOwner>(ownerEntityRef, out var articlesOwner)
                 || !frame.TryFindAsset<EntityPrototype>(projectilePrototypeRef.Id, out var projectilePrototype))
                 return false;
 
-            var articleEntityRef = articlesOwner->SpawnArticle(frame, entity, projectilePrototypeRef);
+            var articleEntityRef = articlesOwner->SpawnArticle(frame, ownerEntityRef, projectilePrototypeRef);
 
             if (frame.Unsafe.TryGetPointer<Transform2D>(articleEntityRef, out var articleTransform))
             {
@@ -45,7 +45,7 @@ namespace HnSF.core.state.actions
                 
                 if (frame.Unsafe.TryGetPointer<FacingDirection>(articleEntityRef,
                         out var articleFacingDirection)
-                    && frame.Unsafe.TryGetPointer<FacingDirection>(entity,
+                    && frame.Unsafe.TryGetPointer<FacingDirection>(ownerEntityRef,
                         out var ownerFacingDirection))
                 {
                     articleFacingDirection->isFacingRight = ownerFacingDirection->isFacingRight;
@@ -55,14 +55,14 @@ namespace HnSF.core.state.actions
             
             if (articleOnSameTeam
                 && frame.Unsafe.TryGetPointer<CombatTeam>(articleEntityRef, out var articleTeam)
-                && frame.Unsafe.TryGetPointer<CombatTeam>(entity, out var selfTeam))
+                && frame.Unsafe.TryGetPointer<CombatTeam>(ownerEntityRef, out var selfTeam))
             {
                 articleTeam->value = selfTeam->value;
             }
 
             if (setSameTargetAsOwner
                 && frame.Unsafe.TryGetPointer<CombatTargeter>(articleEntityRef, out var articleTargeter)
-                && frame.Unsafe.TryGetPointer<CombatTargeter>(entity, out var selfTargeter))
+                && frame.Unsafe.TryGetPointer<CombatTargeter>(ownerEntityRef, out var selfTargeter))
             {
                 articleTargeter->softTarget = selfTargeter->targetEntity;
                 articleTargeter->targetEntity = selfTargeter->targetEntity;
@@ -70,17 +70,14 @@ namespace HnSF.core.state.actions
 
             if (useSameStats)
             {
-                frame.Remove<ActorCombatStats>(articleEntityRef);
-
-                frame.Add(articleEntityRef, new ActorCombatStatsFrom()
-                {
-                    actorCombatStatEntityRef = entity
-                });
+                ConfigureArticleStats(frame, ownerEntityRef, articleEntityRef);
             }
 
             return false;
         }
 
+        partial void ConfigureArticleStats(Frame frame, EntityRef articleOwner, EntityRef article);
+        
         public override HNSFStateAction Copy()
         {
             return CopyTo(new SpawnArticle());
