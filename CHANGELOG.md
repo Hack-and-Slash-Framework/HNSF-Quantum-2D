@@ -1,3 +1,10 @@
+## [1.7.6](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.5...v1.7.6) (2026-03-14)
+
+
+### Bug Fixes
+
+* Moved ActorCombatStats to sample ([45c9414](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/45c941435b9bb28c2ca1b803fcbdb417f277cd19))
+
 ## [1.7.5](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.4...v1.7.5) (2026-03-12)
 
 
