@@ -1,3 +1,10 @@
+## [1.7.7](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.6...v1.7.7) (2026-03-21)
+
+
+### Bug Fixes
+
+* Fixed vfx error on exit play mode ([ca1fdd0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/ca1fdd04f919cf72ff6eec4d670cac151dd993a5))
+
 ## [1.7.6](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.5...v1.7.6) (2026-03-14)
 
 
