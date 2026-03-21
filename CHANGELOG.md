@@ -1,3 +1,10 @@
+## [1.7.8](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.7...v1.7.8) (2026-03-21)
+
+
+### Bug Fixes
+
+* Fix play sound event error on exit play mode ([a88a993](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/a88a993849c0e2f85a169b2f2775b37dc2a37c18))
+
 ## [1.7.7](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.6...v1.7.7) (2026-03-21)
 
 
