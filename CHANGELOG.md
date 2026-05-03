@@ -1,3 +1,10 @@
+## [1.7.9](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.8...v1.7.9) (2026-05-03)
+
+
+### Bug Fixes
+
+* Fix VisualEffectRequest cloning ([bd4ddee](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/bd4ddee169f45d828bfdb80dacb97995aeb62f9e))
+
 ## [1.7.8](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.7...v1.7.8) (2026-03-21)
 
 
