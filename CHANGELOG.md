@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.9...v1.8.0) (2026-05-04)
+
+
+### Features
+
+* Make oneshot event handler methods virtual ([3b1e817](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/3b1e8175e84c66242e34d13fb7cd6af2450668e5))
+
 ## [1.7.9](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.8...v1.7.9) (2026-05-03)
 
 
