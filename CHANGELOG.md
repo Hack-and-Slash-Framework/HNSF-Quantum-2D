@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.8.0...v1.8.1) (2026-05-04)
+
+
+### Bug Fixes
+
+* Change sound eventreceiver methods to virtual ([2f5bed8](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/2f5bed88d4a9a8762c4bcd9e1d9a3f9c76864193))
+
 # [1.8.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.7.9...v1.8.0) (2026-05-04)
 
 
