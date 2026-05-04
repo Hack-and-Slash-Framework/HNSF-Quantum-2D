@@ -7,15 +7,15 @@ using UnityEngine.Pool;
 [System.Serializable]
 public unsafe class CallbackReceiverPlayOneshotVFX2D
 {
-    private List<IDisposable> _disposableCallbacks = new List<IDisposable>();
+    protected List<IDisposable> _disposableCallbacks = new List<IDisposable>();
 
-    private Dictionary<EventKey, VisualEffectBase> _unconfirmedVisualEffects = new();
+    protected Dictionary<EventKey, VisualEffectBase> _unconfirmedVisualEffects = new();
 
     public QuantumEntityViewUpdater viewUpdater;
 
     public Dictionary<VisualEffectEntry, ObjectPool<VisualEffectBase>> visualEffectPools = new();
     
-    public void Initialize()
+    public virtual void Initialize()
     {
         _disposableCallbacks.Add(QuantumCallback.SubscribeManual((CallbackEventCanceled c) => WhenEventCanceled(c)));
         _disposableCallbacks.Add(QuantumCallback.SubscribeManual((CallbackEventConfirmed c) => WhenEventConfirmed(c)));
@@ -26,7 +26,7 @@ public unsafe class CallbackReceiverPlayOneshotVFX2D
         _disposableCallbacks.Add(QuantumEvent.SubscribeManual((EventStopVisualEffect e) => StopEffectEvent(e)));
     }
 
-    public void Breakdown()
+    public virtual void Breakdown()
     {
         for (int i = 0; i < _disposableCallbacks.Count; i++)
         {
@@ -47,7 +47,7 @@ public unsafe class CallbackReceiverPlayOneshotVFX2D
         _unconfirmedVisualEffects.Remove(callback.EventKey);
     }
 
-    private void PlayEffectEvent(EventPlayVisualEffectAtLocation2D callback)
+    protected virtual void PlayEffectEvent(EventPlayVisualEffectAtLocation2D callback)
     {
         if (callback.visualEffectRef == default) return;
         
@@ -130,7 +130,7 @@ public unsafe class CallbackReceiverPlayOneshotVFX2D
     {
     }
     
-    private void StopEffectEvent(EventStopVisualEffect callback)
+    protected virtual void StopEffectEvent(EventStopVisualEffect callback)
     {
         if (viewUpdater == null) viewUpdater = GameObject.FindAnyObjectByType<QuantumEntityViewUpdater>();
         EventKey key = (EventKey)callback;
@@ -156,14 +156,14 @@ public unsafe class CallbackReceiverPlayOneshotVFX2D
         }
     }
 
-    private GameObject GetPooledEffect(VisualEffectEntry entryAsset)
+    protected virtual GameObject GetPooledEffect(VisualEffectEntry entryAsset)
     {
         if (entryAsset == null) return null;
         InitializePool(entryAsset);
         return visualEffectPools[entryAsset].Get().gameObject;
     }
 
-    private void InitializePool(VisualEffectEntry entryAsset)
+     protected virtual void InitializePool(VisualEffectEntry entryAsset)
     {
         if (visualEffectPools.ContainsKey(entryAsset)) return;
         visualEffectPools.Add(entryAsset, new ObjectPool<VisualEffectBase>(
@@ -181,14 +181,14 @@ public unsafe class CallbackReceiverPlayOneshotVFX2D
         ));
     }
     
-    private void ReinitializeVisualEffect(VisualEffectEntry entryAsset,  VisualEffectBase ve)
+    protected virtual void ReinitializeVisualEffect(VisualEffectEntry entryAsset,  VisualEffectBase ve)
     {
         ve.sourcePool = visualEffectPools[entryAsset];
         ve.Reinitialize();
         ve.gameObject.SetActive(true);
     }
     
-    private void ReleaseVisualEffect(VisualEffectBase ve)
+    protected virtual void ReleaseVisualEffect(VisualEffectBase ve)
     {
         ve.transform.SetParent(null, false);
         ve.transform.localScale = new Vector3(1, 1, 1);
