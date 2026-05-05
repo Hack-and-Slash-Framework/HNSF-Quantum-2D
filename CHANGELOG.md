@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.8.1...v1.9.0) (2026-05-05)
+
+
+### Features
+
+* State preview settings ([cf328d5](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/cf328d5fe34aac2ed6f6861307ad05481006a331))
+
 ## [1.8.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.8.0...v1.8.1) (2026-05-04)
 
 
