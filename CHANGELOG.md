@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.9.0...v1.10.0) (2026-05-23)
+
+
+### Features
+
+* Scaling support for boxes & ECB ([2bfaa0f](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/2bfaa0f50dced1ae0e2dc907d3d990f668b9aa80))
+
 # [1.9.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.8.1...v1.9.0) (2026-05-05)
 
 
