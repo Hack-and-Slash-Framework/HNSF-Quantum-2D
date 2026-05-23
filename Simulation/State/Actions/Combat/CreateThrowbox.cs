@@ -10,6 +10,7 @@ namespace HnSF.core.state.actions
     {
         public int throwboxIdentifier;
         public int priority;
+        public bool ignoreScale;
 
         public AssetRef<ThrowInfo> throwInfoReference;
 
@@ -54,7 +55,22 @@ namespace HnSF.core.state.actions
                 realRotation = rotation;
             }
             
-            var hitboxEntity = frame.Create();
+            if (!ignoreScale && frame.Unsafe.TryGetPointer<Scale2D>(entity, out var scale))
+            {
+                switch (shape.Type)
+                {
+                    case Shape2DType.Box:
+                        shape.Box.Extents = new FPVector2(shape.Box.Extents.X * scale->value.X, shape.Box.Extents.Y * scale->value.Y);
+                        break;
+                    case Shape2DType.Circle:
+                        shape.Circle.Radius *= scale->value.X;
+                        break;
+                }
+
+                realOffset = new FPVector2(realOffset.X * scale->value.X, realOffset.Y * scale->value.Y);
+            }
+            
+            var throwboxEntity = frame.Create();
             
             var boxPhysicsCollider = new PhysicsCollider2D
             {
@@ -63,12 +79,12 @@ namespace HnSF.core.state.actions
                 Shape = shape
             };
 
-            frame.Add(hitboxEntity, new Throwbox() { active = true, priority = priority, owner = entity, throwInfoRef = throwInfoReference, id = throwboxIdentifier});
-            frame.Add(hitboxEntity, new Transform2D(){ Position = transform->Position + faceDir->TransformDirection(realOffset), Rotation = transform->Rotation + (realRotation * FP.Deg2Rad)});
-            frame.Add(hitboxEntity, new Parented2D() { parent = entity, localOffset = faceDir->TransformDirection(realOffset), localRotation = realRotation });
-            frame.Add(hitboxEntity, boxPhysicsCollider);
+            frame.Add(throwboxEntity, new Throwbox() { active = true, priority = priority, owner = entity, throwInfoRef = throwInfoReference, id = throwboxIdentifier});
+            frame.Add(throwboxEntity, new Transform2D(){ Position = transform->Position + faceDir->TransformDirection(realOffset), Rotation = transform->Rotation + (realRotation * FP.Deg2Rad)});
+            frame.Add(throwboxEntity, new Parented2D() { parent = entity, localOffset = faceDir->TransformDirection(realOffset), localRotation = realRotation });
+            frame.Add(throwboxEntity, boxPhysicsCollider);
             
-            hitboxList.Add(hitboxEntity);
+            hitboxList.Add(throwboxEntity);
             return false;
         }
 
@@ -82,6 +98,7 @@ namespace HnSF.core.state.actions
             var t = target as CreateThrowbox;
             t.throwboxIdentifier = throwboxIdentifier;
             t.priority = priority;
+            t.ignoreScale = ignoreScale;
             t.throwInfoReference = throwInfoReference;
             t.useExternalShapeConfig = useExternalShapeConfig;
             t.externalShape2DConfigReference = externalShape2DConfigReference;

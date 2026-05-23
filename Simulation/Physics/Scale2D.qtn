@@ -1,0 +1,3 @@
+component Scale2D{
+    FPVector2 value;
+}

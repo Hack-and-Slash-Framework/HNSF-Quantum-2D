@@ -10,6 +10,7 @@ namespace HnSF.core.state.actions
     {
         public int collisionboxIdentifier;
         public int priority;
+        public bool ignoreScale;
 
         public bool useExternalShapeConfig;
         [DrawIf(nameof(useExternalShapeConfig), true)]
@@ -52,6 +53,21 @@ namespace HnSF.core.state.actions
                 realRotation = rotation;
             }
             
+            if (!ignoreScale && frame.Unsafe.TryGetPointer<Scale2D>(entity, out var scale))
+            {
+                switch (shape.Type)
+                {
+                    case Shape2DType.Box:
+                        shape.Box.Extents = new FPVector2(shape.Box.Extents.X * scale->value.X, shape.Box.Extents.Y * scale->value.Y);
+                        break;
+                    case Shape2DType.Circle:
+                        shape.Circle.Radius *= scale->value.X;
+                        break;
+                }
+
+                realOffset = new FPVector2(realOffset.X * scale->value.X, realOffset.Y * scale->value.Y);
+            }
+            
             var hitboxEntity = frame.Create();
             
             var hitboxPhysicsCollider = new PhysicsCollider2D
@@ -80,6 +96,7 @@ namespace HnSF.core.state.actions
             var t = target as CreateCollisionbox;
             t.collisionboxIdentifier = collisionboxIdentifier;
             t.priority = priority;
+            t.ignoreScale = ignoreScale;
             t.useExternalShapeConfig = useExternalShapeConfig;
             t.externalShape2DConfigReference = externalShape2DConfigReference;
             t.offset = offset;

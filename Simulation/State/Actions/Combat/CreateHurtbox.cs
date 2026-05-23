@@ -10,6 +10,7 @@ namespace HnSF.core.state.actions
     {
         public int hurtboxIdentifier;
         public int priority;
+        public bool ignoreScale;
 
         public AssetRef<HurtboxInfo> hurtboxInfoReference;
 
@@ -54,7 +55,22 @@ namespace HnSF.core.state.actions
                 realRotation = rotation;
             }
             
-            var hitboxEntity = frame.Create();
+            if (!ignoreScale && frame.Unsafe.TryGetPointer<Scale2D>(entity, out var scale))
+            {
+                switch (shape.Type)
+                {
+                    case Shape2DType.Box:
+                        shape.Box.Extents = new FPVector2(shape.Box.Extents.X * scale->value.X, shape.Box.Extents.Y * scale->value.Y);
+                        break;
+                    case Shape2DType.Circle:
+                        shape.Circle.Radius *= scale->value.X;
+                        break;
+                }
+
+                realOffset = new FPVector2(realOffset.X * scale->value.X, realOffset.Y * scale->value.Y);
+            }
+            
+            var hurtboxEntity = frame.Create();
             
             var boxPhysicsCollider = new PhysicsCollider2D
             {
@@ -63,12 +79,12 @@ namespace HnSF.core.state.actions
                 Shape = shape
             };
 
-            frame.Add(hitboxEntity, new Hurtbox() { active = true, owner = entity, id = hurtboxIdentifier, hurtboxInfoRef = hurtboxInfoReference, priority = priority});
-            frame.Add(hitboxEntity, new Transform2D(){ Position = transform->Position + faceDir->TransformDirection(realOffset), Rotation = transform->Rotation + (realRotation * FP.Deg2Rad)});
-            frame.Add(hitboxEntity, new Parented2D() { parent = entity, localOffset = faceDir->TransformDirection(realOffset), localRotation = realRotation });
-            frame.Add(hitboxEntity, boxPhysicsCollider);
+            frame.Add(hurtboxEntity, new Hurtbox() { active = true, owner = entity, id = hurtboxIdentifier, hurtboxInfoRef = hurtboxInfoReference, priority = priority});
+            frame.Add(hurtboxEntity, new Transform2D(){ Position = transform->Position + faceDir->TransformDirection(realOffset), Rotation = transform->Rotation + (realRotation * FP.Deg2Rad)});
+            frame.Add(hurtboxEntity, new Parented2D() { parent = entity, localOffset = faceDir->TransformDirection(realOffset), localRotation = realRotation });
+            frame.Add(hurtboxEntity, boxPhysicsCollider);
             
-            hitboxList.Add(hitboxEntity);
+            hitboxList.Add(hurtboxEntity);
             return false;
         }
 
@@ -82,6 +98,7 @@ namespace HnSF.core.state.actions
             var t = target as CreateHurtbox;
             t.hurtboxIdentifier = hurtboxIdentifier;
             t.priority = priority;
+            t.ignoreScale = ignoreScale;
             t.hurtboxInfoReference = hurtboxInfoReference;
             t.useExternalShapeConfig = useExternalShapeConfig;
             t.externalShape2DConfigReference = externalShape2DConfigReference;

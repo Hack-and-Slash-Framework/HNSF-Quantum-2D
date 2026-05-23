@@ -11,6 +11,7 @@ namespace HnSF.core.state.actions
         public HNSFParamFP radiusParam;
         public HNSFParamFP heightParam;
         public HNSFParamFPVector2 offsetParam;
+        public bool ignoreScale;
         
         public override bool ExecuteAction(Frame frame, EntityRef entity, FP rangePercent,
             ref HNSFStateContext stateContext)
@@ -20,6 +21,13 @@ namespace HnSF.core.state.actions
             var radius = radiusParam.Resolve(frame, entity, ref stateContext);
             var height = heightParam.Resolve(frame, entity, ref stateContext);
             var offset = offsetParam.Resolve(frame, entity, ref stateContext);
+
+            if (!ignoreScale && frame.Unsafe.TryGetPointer<Scale2D>(entity, out var scale2D))
+            {
+                radius *= scale2D->value.X;
+                height *= scale2D->value.Y;
+                offset = new FPVector2(offset.X * scale2D->value.X, offset.Y * scale2D->value.Y);
+            }
             
             ecb->radius = radius;
             ecb->height = height;

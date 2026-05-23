@@ -11,6 +11,7 @@ namespace HnSF.core.state.actions
         public bool autoDelete = true;
         public int hurtboxIdentifier;
         public int priority;
+        public bool ignoreScale;
         public AssetRef<HurtboxInfo> hurtboxInfoReference;
         
         public bool useExternalShapeConfig;
@@ -54,6 +55,21 @@ namespace HnSF.core.state.actions
                 realOffset = offset;
                 realRotation = rotation;
             }
+            
+            if (!ignoreScale && frame.Unsafe.TryGetPointer<Scale2D>(entity, out var scale))
+            {
+                switch (shape.Type)
+                {
+                    case Shape2DType.Box:
+                        shape.Box.Extents = new FPVector2(shape.Box.Extents.X * scale->value.X, shape.Box.Extents.Y * scale->value.Y);
+                        break;
+                    case Shape2DType.Circle:
+                        shape.Circle.Radius *= scale->value.X;
+                        break;
+                }
+
+                realOffset = new FPVector2(realOffset.X * scale->value.X, realOffset.Y * scale->value.Y);
+            }
                 
             var boxPhysicsCollider = new PhysicsCollider2D
             {
@@ -82,6 +98,7 @@ namespace HnSF.core.state.actions
             t.autoDelete = autoDelete;
             t.hurtboxIdentifier = hurtboxIdentifier;
             t.priority = priority;
+            t.ignoreScale = ignoreScale;
             t.hurtboxInfoReference = hurtboxInfoReference;
             t.useExternalShapeConfig = useExternalShapeConfig;
             t.externalShape2DConfigReference = externalShape2DConfigReference;
