@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.10.0...v1.11.0) (2026-06-09)
+
+
+### Features
+
+* Warningbox related actions ([098c2e6](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/098c2e6bc0716f1443fc25011471ba3e605030ce))
+
 # [1.10.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.9.0...v1.10.0) (2026-05-23)
 
 
