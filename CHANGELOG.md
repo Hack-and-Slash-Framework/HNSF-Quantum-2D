@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.11.0...v1.11.1) (2026-06-22)
+
+
+### Bug Fixes
+
+* Call Validate on SFX param ([bfb3901](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/bfb3901f97e487537240354667920e942439e613))
+
 # [1.11.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.10.0...v1.11.0) (2026-06-09)
 
 
