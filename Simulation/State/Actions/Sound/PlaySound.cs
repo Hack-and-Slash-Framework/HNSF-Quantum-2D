@@ -9,7 +9,13 @@ namespace HnSF.core.state.actions
     {
         public PlaySoundRequestParam playSoundRequestParam;
         public bool offsetFromECBCenter;
-    
+
+        public override void OnValidate()
+        {
+            base.OnValidate();
+            playSoundRequestParam.OnValidate();
+        }
+
         public override bool ExecuteAction(Frame frame, EntityRef entity, FP rangePercent,
             ref HNSFStateContext stateContext)
         {
