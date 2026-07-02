@@ -1,3 +1,10 @@
+## [1.11.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.11.1...v1.11.2) (2026-07-02)
+
+
+### Bug Fixes
+
+* Fix PlaySound cloning ([7c2bc95](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/7c2bc953f773d48423e877ee2b4854862f2ccfae))
+
 ## [1.11.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.11.0...v1.11.1) (2026-06-22)
 
 
