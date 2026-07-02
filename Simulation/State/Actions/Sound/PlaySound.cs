@@ -46,7 +46,8 @@ namespace HnSF.core.state.actions
         public override HNSFStateAction CopyTo(HNSFStateAction target)
         {
             var t = target as PlaySound;
-            t.playSoundRequestParam = playSoundRequestParam;
+            t.playSoundRequestParam = playSoundRequestParam.Clone();
+            t.offsetFromECBCenter = offsetFromECBCenter;
             return base.CopyTo(target);
         }
     }
