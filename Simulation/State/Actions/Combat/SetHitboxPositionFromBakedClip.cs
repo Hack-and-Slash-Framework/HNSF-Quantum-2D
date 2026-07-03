@@ -16,6 +16,7 @@ namespace HnSF.core.state.actions
         public AssetRef<AnimationEntryBakedData> bakedClipAssetRef;
         public AssetRef<Tag> boneTag;
         public FP multi = 1;
+        public FPVector2 posOffsetFromRot;
 
         public int startOffset = 0;
 
@@ -40,7 +41,10 @@ namespace HnSF.core.state.actions
                                                       (FP)bakedClipAsset.FrameRate) * multi, boneTag, out var animationFrame))
                     return false;
 
-                hitboxParented->localOffset = new FPVector2(animationFrame.Position.X * faceDir->GetFacingMulti(), animationFrame.Position.Y);
+                var finalOffset = animationFrame.Position;
+                finalOffset += animationFrame.Rotation * new FPVector3(posOffsetFromRot.X, posOffsetFromRot.Y, 0);
+                
+                hitboxParented->localOffset = new FPVector2(finalOffset.X * faceDir->GetFacingMulti(), finalOffset.Y);
                 if(useRotation) hitboxParented->localRotation = animationFrame.RotationY+90;
             }
             else
@@ -48,8 +52,11 @@ namespace HnSF.core.state.actions
                 if (!bakedClipAsset.TryGetClosestFrame(((FP)(stateContext.stateFrame - startOffset) /
                                                       (FP)bakedClipAsset.FrameRate) * multi, boneTag, out var animationFrame))
                     return false;
+
+                var finalOffset = animationFrame.Position;
+                finalOffset += animationFrame.Rotation * new FPVector3(posOffsetFromRot.X, posOffsetFromRot.Y, 0);
                 
-                hitboxParented->localOffset = new FPVector2(animationFrame.Position.X * faceDir->GetFacingMulti(), animationFrame.Position.Y);
+                hitboxParented->localOffset = new FPVector2(finalOffset.X * faceDir->GetFacingMulti(), finalOffset.Y);
                 if(useRotation) hitboxParented->localRotation = animationFrame.RotationY+90;
             }
             return false;
