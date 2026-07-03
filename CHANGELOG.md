@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.11.2...v1.12.0) (2026-07-03)
+
+
+### Features
+
+* Improved clip baked data ([37baaae](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/37baaae144257f2ff898c2f20398b9369c655ee8))
+
 ## [1.11.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.11.1...v1.11.2) (2026-07-02)
 
 
