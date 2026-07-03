@@ -24,7 +24,7 @@ namespace HnSF
         [SerializeField] private float _lastSlider = 0;
         [SerializeField] private float previewSlider = 0;
 
-        [SerializeField] private AnimationClipBakedData dataAsset;
+        [SerializeField] private AnimationEntryBakedData dataAsset;
         [SerializeField] private Tag tagAsset;
 
         [SerializeField] private AnimationFrame[] Frames;
@@ -63,7 +63,7 @@ namespace HnSF
             EditorGUILayout.Space();
 
             dataAsset =
-                EditorGUILayout.ObjectField(dataAsset, typeof(AnimationClipBakedData), false) as AnimationClipBakedData;
+                EditorGUILayout.ObjectField(dataAsset, typeof(AnimationEntryBakedData), false) as AnimationEntryBakedData;
             tagAsset = EditorGUILayout.ObjectField(tagAsset, typeof(Tag), false) as Tag;
 
             EditorGUILayout.Space();
@@ -88,6 +88,7 @@ namespace HnSF
 
         private void TransferToAsset()
         {
+            /*
             if (dataAsset == null || tagAsset == null) return;
 
             float totalFramesFloat = animationClip.length * animationClip.frameRate;
@@ -98,9 +99,9 @@ namespace HnSF
             dataAsset.FrameCount = totalFrames;
             dataAsset.FrameRate = (int)animationClip.frameRate;
             dataAsset.Length = animationClip.length.ToFP();
-            dataAsset.SetEntry(tagAsset, Frames, tagAsset.name);
-            dataAsset.bakedEntries = null;
-            EditorUtility.SetDirty(dataAsset);
+            dataAsset.AddOrUpdateEntry(tagAsset, Frames, tagAsset.name);
+            dataAsset.boneTagToEntry = null;
+            EditorUtility.SetDirty(dataAsset);*/
         }
 
         private void BakeAnimationCurve()

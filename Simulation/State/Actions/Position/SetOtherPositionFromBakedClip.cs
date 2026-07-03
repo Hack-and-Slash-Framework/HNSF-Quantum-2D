@@ -12,7 +12,7 @@ namespace HnSF.core.state.actions
         
         // SELF
         public AssetRef<Tag> self_BoneTag;
-        public AssetRef<AnimationClipBakedData> self_clipBakedData;
+        public AssetRef<AnimationEntryBakedData> self_clipBakedData;
         public int self_FrameOffset;
         
         // Other

@@ -11,7 +11,7 @@ namespace HnSF.core.state.actions
         public int throweeId;
 
         public AssetRef<Tag> tag;
-        public AssetRef<AnimationClipBakedData> curveAssetReference;
+        public AssetRef<AnimationEntryBakedData> curveAssetReference;
         
         public FPVector2 offset;
         

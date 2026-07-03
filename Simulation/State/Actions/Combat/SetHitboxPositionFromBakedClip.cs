@@ -13,7 +13,7 @@ namespace HnSF.core.state.actions
     {
         public int hitboxIdentifier;
 
-        public AssetRef<AnimationClipBakedData> bakedClipAssetRef;
+        public AssetRef<AnimationEntryBakedData> bakedClipAssetRef;
         public AssetRef<Tag> boneTag;
         public FP multi = 1;
 
