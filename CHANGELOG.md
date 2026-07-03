@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.12.0...v1.13.0) (2026-07-03)
+
+
+### Features
+
+* Offset baked clip hitbox position ([fb322aa](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/fb322aa8671b7c365c163722b586e24c43f5a8e5))
+
 # [1.12.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.11.2...v1.12.0) (2026-07-03)
 
 
