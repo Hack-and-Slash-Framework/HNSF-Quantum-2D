@@ -4,6 +4,7 @@ using HnSF.core.state.actions;
 using HnSF.core.state.functions;
 using Photon.Deterministic;
 using Quantum;
+using Int32 = System.Int32;
 
 namespace HnSF.core.systems
 {
@@ -255,7 +256,7 @@ namespace HnSF.core.systems
             
             HNSFStateContext defenderStateContext = new HNSFStateContext(frame, defenderEntityRef);
             var hitReactionResultData = (hitReactionFunction.function as StateFunctionHitReactionResultData).Execute(frame, defenderEntityRef, ref defenderStateContext);
-            lastHitByInfo->lastReceivedHitReaction = hitReactionResultData;
+            lastHitByInfo->lastReceivedHitReaction = (int)hitReactionResultData.hitReaction;
 
             frame.Signals.CombatboxResolvingGotHitReactionResult(&combatPair, &hitReactionResultData);
 
@@ -263,7 +264,7 @@ namespace HnSF.core.systems
             frame.AddOrGet(combatPair.attacker, out LastHitWithInfo* lastHitWithInfo);
             lastHitWithInfo->data.hitInfoData->lastHitEntity = defenderEntityRef;
             BoxCombatantHelper.MarkEntityAsTouched(frame, attackerBoxCombatant, defenderEntityRef, attackerHitbox.id);
-            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction = hitReactionResultData;
+            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction = (int)hitReactionResultData.hitReaction;
             lastHitWithInfo->data.hitInfoData->hitWithInfo = new AssetRef<HitInfoBase>(attackerHitbox.hitInfoRef);
 
             if (frame.TryFindAsset<HNSFStateActionExternal>(attackerBoxCombatant->whenGotHitReactionAction.Id,
@@ -272,8 +273,9 @@ namespace HnSF.core.systems
                 defenderStateContext = new HNSFStateContext(frame, combatPair.attacker);
                 whenGotHitReactionAction.action.ExecuteAction(frame, combatPair.attacker, 0, ref defenderStateContext);
             }
-            
-            switch (hitReactionResultData.hitReaction)
+
+            var react = (StandardHitReactions)hitReactionResultData.hitReaction;
+            switch (react)
             {
                 case StandardHitReactions.Hit:
                     return true;
@@ -312,13 +314,13 @@ namespace HnSF.core.systems
             
             HNSFStateContext defenderStateContext = new HNSFStateContext(frame, defender);
             var hitReaction = (hitReactionFunction.function as StateFunctionHitReactionResultData).Execute(frame, defender, ref defenderStateContext);
-            lastHitByInfo->lastReceivedHitReaction = hitReaction;
+            lastHitByInfo->lastReceivedHitReaction = (int)hitReaction.hitReaction;
             
             // ATTACKER
             frame.AddOrGet(attacker, out LastHitWithInfo* lastHitWithInfo);
             lastHitWithInfo->data.hitInfoData->lastHitEntity = defender;
             BoxCombatantHelper.MarkEntityAsTouched(frame, attackerBoxCombatant, defender, hitboxId);
-            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction = hitReaction;
+            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction = (int)hitReaction.hitReaction;
             lastHitWithInfo->data.hitInfoData->hitWithInfo = hitInfoRef;
 
             if (frame.TryFindAsset<HNSFStateActionExternal>(attackerBoxCombatant->whenGotHitReactionAction.Id,
