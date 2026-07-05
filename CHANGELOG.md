@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.13.1...v1.14.0) (2026-07-05)
+
+
+### Features
+
+* Overridable methods in CombatHitResolverSystem ([0414b21](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/0414b2191b74a19f0b7d10a8919d7ec3df35c60f))
+
 ## [1.13.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.13.0...v1.13.1) (2026-07-05)
 
 
