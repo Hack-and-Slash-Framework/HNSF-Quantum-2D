@@ -256,7 +256,7 @@ namespace HnSF.core.systems
             
             HNSFStateContext defenderStateContext = new HNSFStateContext(frame, defenderEntityRef);
             var hitReactionResultData = (hitReactionFunction.function as StateFunctionHitReactionResultData).Execute(frame, defenderEntityRef, ref defenderStateContext);
-            lastHitByInfo->lastReceivedHitReaction = (int)hitReactionResultData.hitReaction;
+            FillLastHitByInfoFromHitReactionData(lastHitByInfo, hitReactionResultData);
 
             frame.Signals.CombatboxResolvingGotHitReactionResult(&combatPair, &hitReactionResultData);
 
@@ -264,8 +264,8 @@ namespace HnSF.core.systems
             frame.AddOrGet(combatPair.attacker, out LastHitWithInfo* lastHitWithInfo);
             lastHitWithInfo->data.hitInfoData->lastHitEntity = defenderEntityRef;
             BoxCombatantHelper.MarkEntityAsTouched(frame, attackerBoxCombatant, defenderEntityRef, attackerHitbox.id);
-            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction = (int)hitReactionResultData.hitReaction;
             lastHitWithInfo->data.hitInfoData->hitWithInfo = new AssetRef<HitInfoBase>(attackerHitbox.hitInfoRef);
+            FillLastHitWithInfoFromHitReactionData(lastHitWithInfo, hitReactionResultData);
 
             if (frame.TryFindAsset<HNSFStateActionExternal>(attackerBoxCombatant->whenGotHitReactionAction.Id,
                     out var whenGotHitReactionAction))
@@ -274,6 +274,11 @@ namespace HnSF.core.systems
                 whenGotHitReactionAction.action.ExecuteAction(frame, combatPair.attacker, 0, ref defenderStateContext);
             }
 
+            return WasActorHurt(frame, combatPair.attacker, defenderEntityRef, hitReactionResultData);
+        }
+
+        protected virtual bool WasActorHurt(Frame frame, EntityRef attackerEntityRef, EntityRef defenderEntityRef, HitReactionResultData hitReactionResultData)
+        {
             var react = (StandardHitReactions)hitReactionResultData.hitReaction;
             switch (react)
             {
@@ -290,6 +295,19 @@ namespace HnSF.core.systems
             }
         }
 
+        protected virtual void FillLastHitWithInfoFromHitReactionData(LastHitWithInfo* lastHitWithInfo,
+            HitReactionResultData hitReactionResultData)
+        {
+            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction = (int)hitReactionResultData.hitReaction;
+        }
+
+        protected virtual void FillLastHitByInfoFromHitReactionData(LastHitByInfo* lastHitByInfo,
+            HitReactionResultData hitReactionResultData)
+        {
+            lastHitByInfo->lastReceivedHitReaction = (int)hitReactionResultData.hitReaction;
+        }
+
+        // TODO: Find way to not use static
         public static bool DirectDamage(Frame frame, EntityRef attacker, EntityRef defender, AssetRef<HitInfoBase> hitInfoRef,
             int hitboxId = -1, int hitHurtboxId = -1, bool checkForStateChange = true, AssetRef<HNSFState> hitByState = default,
             uint hitByStateIdentifier = 0)
@@ -320,8 +338,8 @@ namespace HnSF.core.systems
             frame.AddOrGet(attacker, out LastHitWithInfo* lastHitWithInfo);
             lastHitWithInfo->data.hitInfoData->lastHitEntity = defender;
             BoxCombatantHelper.MarkEntityAsTouched(frame, attackerBoxCombatant, defender, hitboxId);
-            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction = (int)hitReaction.hitReaction;
             lastHitWithInfo->data.hitInfoData->hitWithInfo = hitInfoRef;
+            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction = (int)hitReaction.hitReaction;
 
             if (frame.TryFindAsset<HNSFStateActionExternal>(attackerBoxCombatant->whenGotHitReactionAction.Id,
                     out var whenGotHitReactionAction))
