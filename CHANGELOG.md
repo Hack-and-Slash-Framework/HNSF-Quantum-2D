@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.13.0...v1.13.1) (2026-07-05)
+
+
+### Bug Fixes
+
+* Fix HitReactionResultData usage ([d5951ad](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/d5951ad7791894f960e89694479d3482d4699a19))
+
 # [1.13.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.12.0...v1.13.0) (2026-07-03)
 
 
