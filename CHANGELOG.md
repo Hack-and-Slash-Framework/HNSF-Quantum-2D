@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.14.0...v1.15.0) (2026-07-08)
+
+
+### Features
+
+* Improved hit resolving logic ([1feb53c](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/1feb53c16b145dddc24aab93cac5335d101d8ba1))
+
 # [1.14.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.13.1...v1.14.0) (2026-07-05)
 
 
