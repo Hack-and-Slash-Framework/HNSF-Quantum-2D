@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.15.0...v1.15.1) (2026-07-18)
+
+
+### Bug Fixes
+
+* Various fixes ([79cc43d](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/79cc43d94dca05ee21661ad566fb6218e6a20c8a))
+
 # [1.15.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.14.0...v1.15.0) (2026-07-08)
 
 
