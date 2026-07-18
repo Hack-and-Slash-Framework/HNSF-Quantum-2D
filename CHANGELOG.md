@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.15.1...v1.16.0) (2026-07-18)
+
+
+### Features
+
+* Improved anim baker ([7482a8f](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/7482a8fd50aea6a66956546162055a86d48251d5))
+
 ## [1.15.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.15.0...v1.15.1) (2026-07-18)
 
 
