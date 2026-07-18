@@ -227,7 +227,7 @@ namespace HnSF
             return false;
         }
 
-        public AnimationFrame GetFrameAtTime(FP time, AssetRef<Tag> boneTag)
+        public AnimationFrame GetFrameAtTime(FP time, AssetRef<Tag> boneTag, bool clamp = false)
         {
             BuildEntries();
             if (boneTagToEntry.ContainsKey(boneTag) == false) return default;
@@ -235,6 +235,8 @@ namespace HnSF
             if (Length == FP._0)
                 return boneTagToEntry[boneTag].paramFrameLists[0].Frames[0];
 
+            if (clamp && time > Length) time = Length;
+            
             while (time > Length)
             {
                 time -= Length;

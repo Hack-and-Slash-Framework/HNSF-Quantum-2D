@@ -13,5 +13,10 @@ namespace Quantum
         {
             return new FPVector2(vector.X * GetFacingMulti(), vector.Y);
         }
+        
+        public FPVector3 TransformDirection(FPVector3 vector)
+        {
+            return new FPVector3(vector.X * GetFacingMulti(), vector.Y, vector.Z);
+        }
     }
 }

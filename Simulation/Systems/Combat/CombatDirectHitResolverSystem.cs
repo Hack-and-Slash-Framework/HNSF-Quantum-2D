@@ -21,16 +21,33 @@ namespace HnSF.core.systems
 
         public virtual bool DirectDamage(Frame frame, DirectHitInfo info)
         {
+            if (info.releaseDefenderFromThrow)
+            {
+                CombatHelper.ThrowHelper.ReleaseThrowee(frame, info.attackerEntityRef, info.defenderEntityRef);
+            }
+            
             var result = AttemptHurtActor(
                 frame: frame,
                 attackerEntityRef: info.attackerEntityRef,
                 defenderEntityRef: info.defenderEntityRef,
-                attackerHitbox: default,
+                attackerHitbox: new Hitbox()
+                {
+                    active = true,
+                    hitInfoRef = info.hitInfoRef.Id,
+                    id = 0,
+                    owner = info.attackerEntityRef
+                },
                 attackerHitboxPos: FPVector2.Zero,
-                defenderHurtbox: default,
+                defenderHurtbox: new Hurtbox()
+                {
+                    active = true,
+                    owner = info.defenderEntityRef,
+                    id = 0
+                },
                 attackerState: info.hitByState,
-                attackerStateId: info.hitByStateIdentifier);
-
+                attackerStateId: info.hitByStateIdentifier,
+                ignoreIfAlreadyTouched: false);
+            
             if (info.checkForStateChange)
             {
                 HNSFStateHelper.Generic.CheckForStateChange(frame, info.defenderEntityRef);

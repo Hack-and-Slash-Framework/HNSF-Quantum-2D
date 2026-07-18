@@ -242,12 +242,12 @@ namespace HnSF.core.systems
         }
 
         protected virtual bool AttemptHurtActor(Frame frame, EntityRef attackerEntityRef, EntityRef defenderEntityRef,
-            Hitbox attackerHitbox, FPVector2 attackerHitboxPos, Hurtbox defenderHurtbox, AssetRef<HNSFState> attackerState, uint attackerStateId)
+            Hitbox attackerHitbox, FPVector2 attackerHitboxPos, Hurtbox defenderHurtbox, AssetRef<HNSFState> attackerState, uint attackerStateId, bool ignoreIfAlreadyTouched = true)
         {
             if (!frame.Unsafe.TryGetPointer<BoxCombatant>(attackerEntityRef, out var attackerBoxCombatant))
                 return false;
 
-            if (BoxCombatantHelper.HasTouchedEntity(frame, attackerBoxCombatant, defenderEntityRef))
+            if (ignoreIfAlreadyTouched && BoxCombatantHelper.HasTouchedEntity(frame, attackerBoxCombatant, defenderEntityRef))
                 return false;
 
             if (!frame.Unsafe.TryGetPointer<BoxCombatant>(defenderEntityRef, out var defenderBoxCombatant))

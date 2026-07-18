@@ -43,6 +43,7 @@ namespace HnSF.core.state.actions
             var t = target as DirectDamage;
             t.hitInfo = hitInfo;
             t.releaseThrowee = releaseThrowee;
+			t.immediateStateChange = immediateStateChange;
             return base.CopyTo(target);
         }
     }
