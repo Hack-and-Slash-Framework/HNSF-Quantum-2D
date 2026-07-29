@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.17.0...v1.18.0) (2026-07-29)
+
+
+### Features
+
+* Battle Scripting actions ([9a9ac56](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/9a9ac56e1e13577042281e97f81d21bd322fd52a))
+
 # [1.17.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.16.0...v1.17.0) (2026-07-24)
 
 
