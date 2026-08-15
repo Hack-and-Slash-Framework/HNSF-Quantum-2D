@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.18.0...v1.19.0) (2026-08-15)
+
+
+### Features
+
+* VFX 2D scaling ([6da7ae7](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/6da7ae7fc93e42a494146345ab12e49c096a3dd4))
+
 # [1.18.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.17.0...v1.18.0) (2026-07-29)
 
 
