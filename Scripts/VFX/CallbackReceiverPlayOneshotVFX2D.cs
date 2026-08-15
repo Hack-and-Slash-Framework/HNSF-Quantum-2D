@@ -65,6 +65,7 @@ public unsafe class CallbackReceiverPlayOneshotVFX2D
         var ve = GetPooledEffect(veAsset);
         ve.transform.position = callback.position.ToUnityVector3();
         ve.transform.eulerAngles = Vector3.zero;
+        ve.transform.localScale = callback.scale.ToUnityVector3();
         
         if (!ve.TryGetComponent<VisualEffectBase>(out var veB)) return;
         veB.entryAsset = veAsset;
