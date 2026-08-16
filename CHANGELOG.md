@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.19.0...v1.19.1) (2026-08-16)
+
+
+### Bug Fixes
+
+* Fix build errors ([97995c1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/97995c1a47cc4badcb96c5161d3fb3d3ffd5e1e5))
+
 # [1.19.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.18.0...v1.19.0) (2026-08-15)
 
 
