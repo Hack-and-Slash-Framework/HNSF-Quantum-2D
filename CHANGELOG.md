@@ -1,3 +1,10 @@
+# [1.20.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.19.1...v1.20.0) (2026-08-25)
+
+
+### Features
+
+* Use weight and pushResistance for player collisions ([fc3a4a1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/fc3a4a17a2760bc2306bb865917783e667b5c4b2))
+
 ## [1.19.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.19.0...v1.19.1) (2026-08-16)
 
 
