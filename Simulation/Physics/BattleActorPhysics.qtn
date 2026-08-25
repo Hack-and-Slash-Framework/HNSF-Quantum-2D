@@ -1,8 +1,8 @@
 component BattleActorPhysics
 {
     StateGroundedType currentGroundedState;
-    FP pushStrength;
-    FP selfPushStrength;
+    FP weight;
+    FP pushResistance;
     FPVector2 force;
     FPVector2 conservedIntertia;
     FPVector2 rotationDir;

@@ -161,40 +161,7 @@ namespace HnSF.core.systems
         protected virtual void ResolveCollisionPair(Frame f, KeyValuePair<EntityRef, CollisionCombatPair> collisionPair,
             CombatConfiguration combatConfig)
         {
-            if (!f.Unsafe.TryGetPointer<Transform2D>(collisionPair.Value.entityACollbox, out var entityACollTransform)
-                || !f.Unsafe.TryGetPointer<Transform2D>(collisionPair.Value.entityBCollbox,
-                    out var entityBCollTransform))
-                return;
-
-            var dir = entityACollTransform->Position - entityBCollTransform->Position;
-            dir.Y = 0;
-            dir = dir.Normalized;
-            dir *= 10;
-
-            var entityAHasActorPhysics = f.Unsafe.TryGetPointer<BattleActorPhysics>(collisionPair.Value.entityA,
-                out var entityABattleActorPhysics);
-            var entityBHasActorPhysics = f.Unsafe.TryGetPointer<BattleActorPhysics>(collisionPair.Value.entityB,
-                out var entityBBattleActorPhysics);
-
-            var entityAPushImpulse = dir;
-            var entityBPushImpulse = -dir;
-
-            if (entityAHasActorPhysics)
-            {
-                entityBPushImpulse *= entityABattleActorPhysics->pushStrength *
-                                      (entityBHasActorPhysics ? entityBBattleActorPhysics->selfPushStrength : 1);
-            }
-
-            if (entityBHasActorPhysics)
-            {
-                entityAPushImpulse *= entityBBattleActorPhysics->pushStrength *
-                                      (entityAHasActorPhysics ? entityABattleActorPhysics->selfPushStrength : 1);
-            }
-
-            if (entityAHasActorPhysics)
-                entityABattleActorPhysics->SetExternalImpulse(f, collisionPair.Value.entityA, entityAPushImpulse);
-            if (entityBHasActorPhysics)
-                entityBBattleActorPhysics->SetExternalImpulse(f, collisionPair.Value.entityB, entityBPushImpulse);
+            
         }
 
         protected virtual bool ThrowEntity(Frame f, ThrowboxCombatPair combatPair,
