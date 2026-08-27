@@ -1,3 +1,10 @@
+## [1.20.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.20.0...v1.20.1) (2026-08-27)
+
+
+### Bug Fixes
+
+* Use simulation config layers ([cfc154e](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/cfc154e88d287fcd8b338d6e8bb5a67727a97ca8))
+
 # [1.20.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.19.1...v1.20.0) (2026-08-25)
 
 
