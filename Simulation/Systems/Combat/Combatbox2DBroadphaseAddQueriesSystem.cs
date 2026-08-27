@@ -11,13 +11,13 @@ namespace HnSF.core.systems
             hitbox,
             hurtbox,
             collisionbox,
-            throwbox
+            throwbox,
+            warningbox
         }
 
         public override void OnInit(Frame f)
         {
             base.OnInit(f);
-            f.Context.GetMasks(f);
         }
         
         public override void Update(Frame f)
@@ -28,13 +28,11 @@ namespace HnSF.core.systems
             
             HostProfiler.Start("Combatbox_PARTITION_BROADPHASE_QUERIES");
             {
-                HostProfiler.Start("BUILD FILTERS");
                 var hitboxFilter = f.Filter<Hitbox, Transform2D, PhysicsCollider2D>();
                 var collisionboxFilter = f.Filter<Collisionbox, Transform2D, PhysicsCollider2D>();
                 var throwboxFilter = f.Filter<Throwbox, Transform2D, PhysicsCollider2D>();
-                HostProfiler.End();
-
-                HostProfiler.Start("Do Filters");
+                var warningboxFilter = f.Filter<Warningbox, Transform2D, PhysicsCollider2D>();
+                
                 while (hitboxFilter.NextUnsafe(out var entityRef, out _, out var transform, out var physicsCollider3D))
                 {
                     DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.hitbox);
@@ -51,33 +49,44 @@ namespace HnSF.core.systems
                 {
                     DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.throwbox);
                 }
-                HostProfiler.End();
+                
+                while (warningboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
+                           out var physicsCollider2D))
+                {
+                    DoQuery(f, ref entityRef, transform, physicsCollider2D, CombatboxType.warningbox);
+                }
             }
             HostProfiler.End();
         }
 
-        private void DoQuery(Frame frame, ref EntityRef entityRef, Transform2D* boxTransform, PhysicsCollider2D* boxCollider, CombatboxType boxType)
+        protected virtual void DoQuery(Frame frame, ref EntityRef entityRef, Transform2D* boxTransform, PhysicsCollider2D* boxCollider, CombatboxType boxType)
         {
+            var simConfig = frame.SimulationConfig;
+            
             QueryOptions queryOptions;
             Quantum.LayerMask layerMask;
             List<FrameContextUser.EntityToPhysicsQuery> queryList;
             switch (boxType)
             {
                 case CombatboxType.hitbox:
-                    layerMask = frame.Context.hitboxLayerMask;
+                    layerMask = simConfig.layerMaskHitbox | simConfig.layerMaskHurtbox;
                     queryList = frame.Context.HitboxBroadphaseQueries;
                     break;
                 case CombatboxType.hurtbox:
-                    layerMask = frame.Context.hurtboxLayerMask;
+                    layerMask = simConfig.layerMaskHitbox;
                     queryList = frame.Context.HurtboxBroadphaseQueries;
                     break;
                 case CombatboxType.collisionbox:
-                    layerMask = frame.Context.collisionboxLayerMask;
+                    layerMask = simConfig.layerMaskCollisionbox;
                     queryList = frame.Context.CollisionboxBroadphaseQueries;
                     break;
                 case CombatboxType.throwbox:
-                    layerMask = frame.Context.throwboxLayerMask;
+                    layerMask = simConfig.layerMaskHurtbox;
                     queryList = frame.Context.ThrowboxBroadphaseQueries;
+                    break;
+                case CombatboxType.warningbox:
+                    layerMask = simConfig.layerMaskHurtbox;
+                    queryList = frame.Context.WarningboxBroadphaseQueries;
                     break;
                 default:
                     return;

@@ -59,6 +59,8 @@ namespace Quantum
         public HashSet<PairEntry> hitboxToHurtboxCollisions = new();
         public HashSet<PairEntry> collisionboxToCollisionboxCollisions = new();
         public HashSet<PairEntry> throwboxToHurtboxCollisions = new();
+        public HashSet<PairEntry> warningboxToHurtboxCollisions = new();
+
         
         public Dictionary<EntityRef, List<HitboxCombatPair>> defenderPotentiallyHitBy = new();
         public Dictionary<EntityRef, HashSet<EntityRef>> attackersPotentiallyHitting = new();
@@ -76,7 +78,9 @@ namespace Quantum
         public List<EntityToPhysicsQuery> HurtboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
         public List<EntityToPhysicsQuery> CollisionboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
         public List<EntityToPhysicsQuery> ThrowboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
-        
+        public List<EntityToPhysicsQuery> WarningboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
+
+
         // CULLING
         public delegate bool CullingDelegate(FPVector3 position);
         public CullingDelegate CullingCallback;
@@ -89,6 +93,7 @@ namespace Quantum
             hitboxToHurtboxCollisions.Clear();
             collisionboxToCollisionboxCollisions.Clear();
             throwboxToHurtboxCollisions.Clear();
+            warningboxToHurtboxCollisions.Clear();
             
             defenderPotentiallyHitBy.Clear();
             attackersPotentiallyHitting.Clear();
@@ -100,6 +105,7 @@ namespace Quantum
             HurtboxBroadphaseQueries.Clear();
             CollisionboxBroadphaseQueries.Clear();
             ThrowboxBroadphaseQueries.Clear();
+            WarningboxBroadphaseQueries.Clear();
         }
         
         public int GetIndexOfAttacker(EntityRef defenderEntityRef, EntityRef attackerRef)

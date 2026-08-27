@@ -8,20 +8,22 @@ namespace HnSF.core.state.actions
     [AddTypeMenu(menuName: "Position/Set Position")]
     public unsafe partial class SetPosition : HNSFStateAction
     {
-        public FPVector2 offset;
+        public HNSFParamFPVector2 positionParam;
         public int throweeId;
 
         public override bool ExecuteAction(Frame frame, EntityRef entity, FP rangePercent,
             ref HNSFStateContext stateContext)
         {
-            if (!frame.Unsafe.TryGetPointer<FacingDirection>(entity, out var facingDir) ||
-                !frame.Unsafe.TryGetPointer<Transform2D>(entity, out var originPointTransform)) return false;
-
             var targetEntityRef = GetActionTargetEntityRef(frame, entity);
             if (targetEntityRef == EntityRef.None) return false;
 
-            if (!frame.Unsafe.TryGetPointer<Transform2D>(targetEntityRef, out var throweeTransform)) return false;
-            throweeTransform->Position = originPointTransform->Position + facingDir->TransformDirection(offset);
+            HNSFStateContext ctx = new HNSFStateContext(frame, targetEntityRef);
+            
+            if (!frame.Unsafe.TryGetPointer<Transform2D>(targetEntityRef, out var targetTransform)) return false;
+            
+            var position = positionParam.Resolve(frame, entity, ref ctx);
+            
+            targetTransform->Position = position;
             return false;
         }
 
@@ -33,7 +35,7 @@ namespace HnSF.core.state.actions
         public override HNSFStateAction CopyTo(HNSFStateAction target)
         {
             var t = target as SetPosition;
-            t.offset = offset;
+            t.positionParam = positionParam.Clone() as HNSFParamFPVector2;
             t.throweeId = throweeId;
             return base.CopyTo(target);
         }
