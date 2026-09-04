@@ -22,27 +22,19 @@ namespace HnSF.core.GroupControl.Actions
 #endif
         public GroupControlFunctionFPVector2 playPosition;
         
-        public override void OnEnter(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
+        public override BattleScriptResult OnEnter(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
         {
             if (!frame.TryFindAsset(sfxExternalRequest, out var externalRequestAsset))
             {
                 Log.Debug("Could not find asset: " + sfxExternalRequest);
-                return;
+                return BattleScriptResult.Failed;
             }
             var request = externalRequestAsset.request;
             var sfx = request.GetRngSound(frame.RNG);
             var pos = playPosition.Execute(frame, infoEntityRef, ref context);
 
             SoundEffectHelper.PlaySound(frame, request, sfx, infoEntityRef, pos.XYO, isGlobal: true);
-        }
-        
-        public override bool Tick(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
-        {
-            return true;
-        }
-        
-        public override void OnExit(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
-        {
+            return BattleScriptResult.Succeeded;
         }
     }
 }

@@ -26,21 +26,13 @@ namespace HnSF.core.GroupControl.Actions
 #endif
         public GroupControlFunctionFPVector2 position;
         
-        public override void OnEnter(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
+        public override BattleScriptResult OnEnter(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
         {
             var otherEntityRef = entityGrabberFunction.Execute(frame, infoEntityRef, ref context);
-            if (!frame.Exists(otherEntityRef)) return;
+            if (!frame.Exists(otherEntityRef)) return BattleScriptResult.Failed;
             var pos2d = frame.Unsafe.GetPointer<Transform2D>(otherEntityRef);
             pos2d->Position = position.Execute(frame, infoEntityRef, ref context);
-        }
-        
-        public override bool Tick(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
-        {
-            return true;
-        }
-        
-        public override void OnExit(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
-        {
+            return BattleScriptResult.Succeeded;
         }
     }
 }

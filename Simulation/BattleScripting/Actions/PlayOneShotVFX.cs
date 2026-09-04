@@ -21,12 +21,12 @@ namespace HnSF.core.GroupControl.Actions
 #endif
         public GroupControlFunctionFPVector2 playPosition;
         
-        public override void OnEnter(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
+        public override BattleScriptResult OnEnter(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
         {
             if (!frame.TryFindAsset(vfxExternalRequest, out var externalRequestAsset))
             {
                 Log.Debug("Could not find asset: " + vfxExternalRequest);
-                return;
+                return BattleScriptResult.Failed;
             }
             var request = externalRequestAsset.request;
             var vfx = request.GetRngVFX(frame.RNG);
@@ -34,15 +34,7 @@ namespace HnSF.core.GroupControl.Actions
             
             VisualEffectHelper.PlayVisualEffect(frame, request, vfx, infoEntityRef, pos.XYO,
                 true, false);
-        }
-        
-        public override bool Tick(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
-        {
-            return true;
-        }
-        
-        public override void OnExit(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
-        {
+            return BattleScriptResult.Succeeded;
         }
     }
 }
