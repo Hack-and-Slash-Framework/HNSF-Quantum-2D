@@ -1,3 +1,10 @@
+## [1.21.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.21.0...v1.21.1) (2026-11-08)
+
+
+### Bug Fixes
+
+* Fix warning zone physics call ([dfd2e5f](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/dfd2e5f536d1629cd2ee05a77e894f73f33decb5))
+
 # [1.21.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.20.2...v1.21.0) (2026-11-08)
 
 
