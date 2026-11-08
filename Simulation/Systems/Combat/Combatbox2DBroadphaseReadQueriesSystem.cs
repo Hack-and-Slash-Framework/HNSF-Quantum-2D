@@ -18,7 +18,7 @@ namespace HnSF.core.systems
         {
             foreach (var warningboxQuery in f.Context.WarningboxBroadphaseQueries)
             {
-                if (!f.Physics3D.TryGetQueryHits(warningboxQuery.queryRef, out var hurtboxHits) ||
+                if (!f.Physics2D.TryGetQueryHits(warningboxQuery.queryRef, out var hurtboxHits) ||
                     hurtboxHits.Count == 0) continue;
 
                 Warningbox* attackerWarningbox = f.Unsafe.GetPointer<Warningbox>(warningboxQuery.entityRef);

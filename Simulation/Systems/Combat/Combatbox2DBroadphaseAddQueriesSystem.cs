@@ -30,27 +30,27 @@ namespace HnSF.core.systems
             var throwboxFilter = f.Filter<Throwbox, Transform2D, PhysicsCollider2D>();
             var warningboxFilter = f.Filter<Warningbox, Transform2D, PhysicsCollider2D>();
             
-            while (hitboxFilter.NextUnsafe(out var entityRef, out _, out var transform, out var physicsCollider3D))
+            while (hitboxFilter.NextUnsafe(out var entityRef, out _, out var transform, out var physicsCollider))
             {
-                DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.hitbox);
+                DoQuery(f, ref entityRef, transform, physicsCollider, CombatboxType.hitbox);
             }
 
             while (collisionboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
-                       out var physicsCollider3D))
+                       out var physicsCollider))
             {
-                DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.collisionbox);
+                DoQuery(f, ref entityRef, transform, physicsCollider, CombatboxType.collisionbox);
             }
             
             while (throwboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
-                       out var physicsCollider3D))
+                       out var physicsCollider))
             {
-                DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.throwbox);
+                DoQuery(f, ref entityRef, transform, physicsCollider, CombatboxType.throwbox);
             }
             
             while (warningboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
-                       out var physicsCollider2D))
+                       out var physicsCollider))
             {
-                DoQuery(f, ref entityRef, transform, physicsCollider2D, CombatboxType.warningbox);
+                DoQuery(f, ref entityRef, transform, physicsCollider, CombatboxType.warningbox);
             }
         }
 
