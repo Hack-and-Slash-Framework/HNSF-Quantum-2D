@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Quantum;
-using Quantum.Profiling;
 
 namespace HnSF.core.systems
 {
@@ -26,37 +25,33 @@ namespace HnSF.core.systems
             f.Signals.CombatboxResolvingPreBroadphase();
             EventReceiverHelper.CallEvent(f, (int)EventReceiverTyping.PreCombatboxBroadphase);
             
-            HostProfiler.Start("Combatbox_PARTITION_BROADPHASE_QUERIES");
+            var hitboxFilter = f.Filter<Hitbox, Transform2D, PhysicsCollider2D>();
+            var collisionboxFilter = f.Filter<Collisionbox, Transform2D, PhysicsCollider2D>();
+            var throwboxFilter = f.Filter<Throwbox, Transform2D, PhysicsCollider2D>();
+            var warningboxFilter = f.Filter<Warningbox, Transform2D, PhysicsCollider2D>();
+            
+            while (hitboxFilter.NextUnsafe(out var entityRef, out _, out var transform, out var physicsCollider3D))
             {
-                var hitboxFilter = f.Filter<Hitbox, Transform2D, PhysicsCollider2D>();
-                var collisionboxFilter = f.Filter<Collisionbox, Transform2D, PhysicsCollider2D>();
-                var throwboxFilter = f.Filter<Throwbox, Transform2D, PhysicsCollider2D>();
-                var warningboxFilter = f.Filter<Warningbox, Transform2D, PhysicsCollider2D>();
-                
-                while (hitboxFilter.NextUnsafe(out var entityRef, out _, out var transform, out var physicsCollider3D))
-                {
-                    DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.hitbox);
-                }
-
-                while (collisionboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
-                           out var physicsCollider3D))
-                {
-                    DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.collisionbox);
-                }
-                
-                while (throwboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
-                           out var physicsCollider3D))
-                {
-                    DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.throwbox);
-                }
-                
-                while (warningboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
-                           out var physicsCollider2D))
-                {
-                    DoQuery(f, ref entityRef, transform, physicsCollider2D, CombatboxType.warningbox);
-                }
+                DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.hitbox);
             }
-            HostProfiler.End();
+
+            while (collisionboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
+                       out var physicsCollider3D))
+            {
+                DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.collisionbox);
+            }
+            
+            while (throwboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
+                       out var physicsCollider3D))
+            {
+                DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.throwbox);
+            }
+            
+            while (warningboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
+                       out var physicsCollider2D))
+            {
+                DoQuery(f, ref entityRef, transform, physicsCollider2D, CombatboxType.warningbox);
+            }
         }
 
         protected virtual void DoQuery(Frame frame, ref EntityRef entityRef, Transform2D* boxTransform, PhysicsCollider2D* boxCollider, CombatboxType boxType)

@@ -1,11 +1,51 @@
 using System;
 using System.Collections.Generic;
+using HnSF;
 using Photon.Deterministic;
 
 namespace Quantum
 {
-    public partial class FrameContextUser
+    public unsafe partial class FrameContextUser
     {
+        public struct ThreatPairKey : IEquatable<ThreatPairKey>
+        {
+            public readonly EntityRef Warningbox;
+            public readonly EntityRef Defender;
+
+            public ThreatPairKey(EntityRef warningbox, EntityRef defender)
+            {
+                Warningbox = warningbox;
+                Defender = defender;
+            }
+
+            public bool Equals(ThreatPairKey other)
+            {
+                return Warningbox == other.Warningbox &&
+                       Defender == other.Defender;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is ThreatPairKey other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (Warningbox.GetHashCode() * 397) ^
+                           Defender.GetHashCode();
+                }
+            }
+        }
+        
+        public struct ThreatPairEntry
+        {
+            public EntityRef attacker;
+            public EntityRef defender;
+            public Warningbox* warningbox;
+        }
+        
         public struct PairEntry : IEquatable<PairEntry>
         {
             public EntityRef boxA;
@@ -59,8 +99,10 @@ namespace Quantum
         public HashSet<PairEntry> hitboxToHurtboxCollisions = new();
         public HashSet<PairEntry> collisionboxToCollisionboxCollisions = new();
         public HashSet<PairEntry> throwboxToHurtboxCollisions = new();
-        public HashSet<PairEntry> warningboxToHurtboxCollisions = new();
 
+        public HashSet<ThreatPairKey> uniqueThreatPairs = new();
+        public Dictionary<EntityRef, List<ThreatPairEntry>> defenderToThreatCandidates = new();
+        public Dictionary<EntityRef, IncomingThreatsGroupEphemeral> defenderToPotentialThreats = new();
         
         public Dictionary<EntityRef, List<HitboxCombatPair>> defenderPotentiallyHitBy = new();
         public Dictionary<EntityRef, HashSet<EntityRef>> attackersPotentiallyHitting = new();
@@ -93,7 +135,10 @@ namespace Quantum
             hitboxToHurtboxCollisions.Clear();
             collisionboxToCollisionboxCollisions.Clear();
             throwboxToHurtboxCollisions.Clear();
-            warningboxToHurtboxCollisions.Clear();
+            
+            uniqueThreatPairs.Clear();
+            defenderToThreatCandidates.Clear();
+            defenderToPotentialThreats.Clear();
             
             defenderPotentiallyHitBy.Clear();
             attackersPotentiallyHitting.Clear();
