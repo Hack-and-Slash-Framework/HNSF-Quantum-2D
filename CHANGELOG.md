@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.20.2...v1.21.0) (2026-11-08)
+
+
+### Features
+
+* Threat zones ([41071db](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/commit/41071db2ce9af26555411f3b844dc30c85514988))
+
 ## [1.20.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-2D/compare/v1.20.1...v1.20.2) (2026-09-04)
 
 
