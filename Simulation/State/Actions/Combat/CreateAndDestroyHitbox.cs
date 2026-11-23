@@ -73,7 +73,7 @@ namespace HnSF.core.state.actions
                 
             var hitboxPhysicsCollider = new PhysicsCollider2D
             {
-                Layer = frame.Layers.GetLayerIndex("Hitbox"),
+                Layer = frame.SimulationConfig.layerHitbox,
                 IsTrigger = true,
                 Shape = shape
             };

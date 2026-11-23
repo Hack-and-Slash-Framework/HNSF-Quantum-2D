@@ -2,13 +2,20 @@ using Photon.Deterministic;
 using System;
 using System.Linq;
 using Quantum;
+using UnityEngine.Serialization;
+#if QUANTUM_UNITY
+using UnityEngine.Scripting.APIUpdating;
+#endif
 
 namespace HnSF.core.state.actions
 {
     [Serializable]
-    public unsafe partial class CreateWarningbox : HNSFStateAction
+#if QUANTUM_UNITY
+    [MovedFrom(autoUpdateAPI: false, sourceClassName: "CreateWarningbox")]
+#endif
+    public unsafe partial class CreateTelegraphbox : HNSFStateAction
     {
-        public int warningboxIdentifier;
+        [FormerlySerializedAs("warningboxIdentifier")] public int boxIdentifier;
         public bool ignoreScale;
         public AssetRef damageSourceInfo;
         public bool isThrow;
@@ -30,11 +37,11 @@ namespace HnSF.core.state.actions
                 || !frame.Unsafe.TryGetPointer<Transform2D>(entity, out var transform)
                 || !frame.Unsafe.TryGetPointer<FacingDirection>(entity, out var faceDir)) return false;
             
-            var warningboxList = frame.ResolveList(boxCombatant->warningboxList);
+            var boxList = frame.ResolveList(boxCombatant->telegraphboxList);
 
-            if (boxCombatant->WarningboxExistWithId(frame, warningboxIdentifier))
+            if (boxCombatant->TelegraphboxExistWithId(frame, boxIdentifier))
             {
-                Log.Debug($"Warningbox of id {warningboxIdentifier} already exist on entity {entity.ToString()}. Error came from state {frame.FindAsset<HNSFState>(stateContext.workingState).Label}");
+                Log.Debug($"Telegraphbox of id {boxIdentifier} already exist on entity {entity.ToString()}. Error came from state {frame.FindAsset<HNSFState>(stateContext.workingState).Label}");
                 return false;
             }
 
@@ -69,33 +76,33 @@ namespace HnSF.core.state.actions
                 realOffset = new FPVector2(realOffset.X * scale->value.X, realOffset.Y * scale->value.Y);
             }
             
-            var warningboxEntity = frame.Create();
+            var boxEntity = frame.Create();
             
-            var warningboxPhysicsCollider = new PhysicsCollider2D
+            var boxPhysicsCollider = new PhysicsCollider2D
             {
-                Layer = frame.Layers.GetLayerIndex("Warningbox"),
+                Layer = frame.SimulationConfig.layerTelegraphbox,
                 IsTrigger = true,
                 Shape = shape
             };
 
-            frame.Add(warningboxEntity, new Warningbox() { active = true, owner = entity, damageSourceInfoRef = new AssetRef(damageSourceInfo.Id), isThrow = isThrow, id = warningboxIdentifier });
-            frame.Add(warningboxEntity, new Transform2D(){ Position = transform->Position + faceDir->TransformDirection(realOffset), Rotation = transform->Rotation + (realRotation * FP.Deg2Rad)});
-            frame.Add(warningboxEntity, new Parented2D() { parent = entity, localOffset = faceDir->TransformDirection(realOffset), localRotation = realRotation });
-            frame.Add(warningboxEntity, warningboxPhysicsCollider);
+            frame.Add(boxEntity, new Telegraphbox() { active = true, owner = entity, damageSourceInfoRef = new AssetRef(damageSourceInfo.Id), isThrow = isThrow, id = boxIdentifier });
+            frame.Add(boxEntity, new Transform2D(){ Position = transform->Position + faceDir->TransformDirection(realOffset), Rotation = transform->Rotation + (realRotation * FP.Deg2Rad)});
+            frame.Add(boxEntity, new Parented2D() { parent = entity, localOffset = faceDir->TransformDirection(realOffset), localRotation = realRotation });
+            frame.Add(boxEntity, boxPhysicsCollider);
             
-            warningboxList.Add(warningboxEntity);
+            boxList.Add(boxEntity);
             return false;
         }
 
         public override HNSFStateAction Copy()
         {
-            return CopyTo(new CreateWarningbox());
+            return CopyTo(new CreateTelegraphbox());
         }
 
         public override HNSFStateAction CopyTo(HNSFStateAction target)
         {
-            var t = target as CreateWarningbox;
-            t.warningboxIdentifier = warningboxIdentifier;
+            var t = target as CreateTelegraphbox;
+            t.boxIdentifier = boxIdentifier;
             t.damageSourceInfo = damageSourceInfo;
             t.isThrow = isThrow;
             t.ignoreScale = ignoreScale;

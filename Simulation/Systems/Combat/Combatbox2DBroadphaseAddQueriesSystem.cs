@@ -11,7 +11,7 @@ namespace HnSF.core.systems
             hurtbox,
             collisionbox,
             throwbox,
-            warningbox
+            telegraphbox
         }
 
         public override void OnInit(Frame f)
@@ -28,7 +28,7 @@ namespace HnSF.core.systems
             var hitboxFilter = f.Filter<Hitbox, Transform2D, PhysicsCollider2D>();
             var collisionboxFilter = f.Filter<Collisionbox, Transform2D, PhysicsCollider2D>();
             var throwboxFilter = f.Filter<Throwbox, Transform2D, PhysicsCollider2D>();
-            var warningboxFilter = f.Filter<Warningbox, Transform2D, PhysicsCollider2D>();
+            var telegraphboxFilter = f.Filter<Telegraphbox, Transform2D, PhysicsCollider2D>();
             
             while (hitboxFilter.NextUnsafe(out var entityRef, out _, out var transform, out var physicsCollider))
             {
@@ -47,10 +47,10 @@ namespace HnSF.core.systems
                 DoQuery(f, ref entityRef, transform, physicsCollider, CombatboxType.throwbox);
             }
             
-            while (warningboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
+            while (telegraphboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
                        out var physicsCollider))
             {
-                DoQuery(f, ref entityRef, transform, physicsCollider, CombatboxType.warningbox);
+                DoQuery(f, ref entityRef, transform, physicsCollider, CombatboxType.telegraphbox);
             }
         }
 
@@ -64,24 +64,24 @@ namespace HnSF.core.systems
             switch (boxType)
             {
                 case CombatboxType.hitbox:
-                    layerMask = simConfig.layerMaskHitbox | simConfig.layerMaskHurtbox;
+                    layerMask = (1 << simConfig.layerHitbox) | (1 << simConfig.layerHurtbox);
                     queryList = frame.Context.HitboxBroadphaseQueries;
                     break;
                 case CombatboxType.hurtbox:
-                    layerMask = simConfig.layerMaskHitbox;
+                    layerMask = 1 << simConfig.layerHitbox;
                     queryList = frame.Context.HurtboxBroadphaseQueries;
                     break;
                 case CombatboxType.collisionbox:
-                    layerMask = simConfig.layerMaskCollisionbox;
+                    layerMask = 1 << simConfig.layerCollisionbox;
                     queryList = frame.Context.CollisionboxBroadphaseQueries;
                     break;
                 case CombatboxType.throwbox:
-                    layerMask = simConfig.layerMaskHurtbox;
+                    layerMask = 1 << simConfig.layerHurtbox;
                     queryList = frame.Context.ThrowboxBroadphaseQueries;
                     break;
-                case CombatboxType.warningbox:
-                    layerMask = simConfig.layerMaskHurtbox;
-                    queryList = frame.Context.WarningboxBroadphaseQueries;
+                case CombatboxType.telegraphbox:
+                    layerMask = 1 << simConfig.layerHurtbox;
+                    queryList = frame.Context.TelegraphboxBroadphaseQueries;
                     break;
                 default:
                     return;
